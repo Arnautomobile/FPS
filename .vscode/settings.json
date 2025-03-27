@@ -51,5 +51,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "FPS.sln"
+    "dotnet.defaultSolution": "FPS.sln",
+    "files.autoSave": "off"
 }
