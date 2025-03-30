@@ -468,6 +468,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 0}
+  _aimDot: {fileID: 4824000797767845776}
   _weapons:
   - {fileID: 8945031290492183118}
   - {fileID: 3322697393428082610}

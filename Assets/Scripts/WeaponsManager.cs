@@ -7,7 +7,7 @@ public class WeaponsManager : MonoBehaviour
     [SerializeField] private Transform _weaponPosition;
     [SerializeField] private Camera _camera;
 
-    public Dictionary<AmmoType, int> Ammunitions { get; private set; }
+    public Dictionary<WeaponType, int> Ammunitions { get; private set; }
     public WeaponScript[] Weapons { get; private set; }
     public int Selected { get; private set; }
 
@@ -20,12 +20,12 @@ public class WeaponsManager : MonoBehaviour
         Weapons[2] = null;
         Selected = 0;
 
-        Ammunitions = new Dictionary<AmmoType, int>
+        Ammunitions = new Dictionary<WeaponType, int>
         {
-            { AmmoType.AR, 0 },
-            { AmmoType.PISTOL, 0 },
-            { AmmoType.PRECISION, 0 },
-            { AmmoType.ROCKET, 0 }
+            { WeaponType.AR, 0 },
+            { WeaponType.PISTOL, 0 },
+            { WeaponType.PRECISION, 0 },
+            { WeaponType.ROCKET, 0 }
         };
     }
 
@@ -98,7 +98,7 @@ public class WeaponsManager : MonoBehaviour
 
         if (added) {
             weaponScript.transform.SetParent(_weaponPosition, false);    
-            weaponScript.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);        
+            weaponScript.transform.SetLocalPositionAndRotation(new Vector3(0,0,-2), Quaternion.identity);        
         }
     }
 
@@ -112,7 +112,7 @@ public class WeaponsManager : MonoBehaviour
     }
 
 
-    public void AddAmmo(AmmoType type, int amount)
+    public void AddAmmo(WeaponType type, int amount)
     {
         Ammunitions[type] += amount;
         if (Ammunitions[type] > 999) {
@@ -120,7 +120,7 @@ public class WeaponsManager : MonoBehaviour
         }
     }
 
-    public int RemoveAmmo(AmmoType type, int amount)
+    public int RemoveAmmo(WeaponType type, int amount)
     {
         Ammunitions[type] -= amount;
         if (Ammunitions[type] < 0) {

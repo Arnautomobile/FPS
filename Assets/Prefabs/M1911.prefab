@@ -5390,9 +5390,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1806c508d25ed443b42b5c6655dadf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _type: 1
   _damage: 22
   _range: 100
-  _ammoType: 1
+  _sprite: {fileID: 21300022, guid: 5acb27b603af6d44ea6113c4b7b15385, type: 3}
   _bulletPrefab: {fileID: 5842142090178180871, guid: d0be3a0aee674d541b9b269d76175b4c,
     type: 3}
   _muzzleFlash: {fileID: 6129073980739763811}

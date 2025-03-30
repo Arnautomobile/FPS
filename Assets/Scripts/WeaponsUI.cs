@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +5,7 @@ using UnityEngine.UI;
 public class WeaponsUI : MonoBehaviour
 {
     [SerializeField] private GameObject _player;
+    [SerializeField] private GameObject _aimDot;
     [SerializeField] private GameObject[] _weapons;
     [SerializeField] private GameObject[] _infos;
     [SerializeField] private GameObject _ammoInfo;
@@ -51,21 +50,33 @@ public class WeaponsUI : MonoBehaviour
             else {
                 _infos[i].SetActive(true);
                 _infos[i].GetComponentInChildren<TextMeshProUGUI>().text = weaponScript.gameObject.name;
+                _infos[i].GetComponentInChildren<Image>().sprite = weaponScript.Sprite;
             }
         }
 
         WeaponScript selectedWeapon = _weaponsManager.Weapons[_weaponsManager.Selected];
 
-        if (selectedWeapon == null || selectedWeapon.AmmoType == AmmoType.MELEE) {
+        if (selectedWeapon == null || selectedWeapon.Type == WeaponType.MELEE) {
             _meleeInfo.SetActive(true);
             _ammoInfo.SetActive(false);
+            _aimDot.SetActive(true);
             return;
         }
-
         _meleeInfo.SetActive(false);
         _ammoInfo.SetActive(true);
 
+        for (int i = 0; i < _ammoImages.Length; i++) {
+            if ((int)selectedWeapon.Type == i) {
+                _ammoImages[i].SetActive(true);
+            }
+            else {
+                _ammoImages[i].SetActive(false);
+            }
+        }
+
         FireArm fireArm = (FireArm)selectedWeapon;
+        _aimDot.SetActive(!fireArm.Aiming);
+
         string ammoText = "";
         if (fireArm.BulletsLeft < 10) {
             ammoText += "0";
@@ -73,15 +84,6 @@ public class WeaponsUI : MonoBehaviour
         ammoText += fireArm.BulletsLeft;
 
         _ammoLeft.text = ammoText;
-        _totalAmmo.text = _weaponsManager.Ammunitions[fireArm.AmmoType].ToString();
-
-        for (int i = 0; i < _ammoImages.Length; i++) {
-            if ((int)selectedWeapon.AmmoType == i) {
-                _ammoImages[i].SetActive(true);
-            }
-            else {
-                _ammoImages[i].SetActive(false);
-            }
-        }
+        _totalAmmo.text = _weaponsManager.Ammunitions[fireArm.Type].ToString();
     }
 }

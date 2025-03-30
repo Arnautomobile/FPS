@@ -24,11 +24,12 @@ public class FireArm : WeaponScript
 
     private ParticleSystem _muzzleParticles;
     private Vector3 _target = Vector3.zero;
-    private bool _isReloading = false;
     private float _cooldown = 0;
+    private bool _isReloading = false;
     private bool _playEmptyNoise = false;
 
     public int BulletsLeft { get; private set; }
+    public bool Aiming { get; private set; }
 
 
     private new void Start()
@@ -37,6 +38,7 @@ public class FireArm : WeaponScript
 
         _muzzleParticles = _muzzleFlash.GetComponent<ParticleSystem>();
         BulletsLeft = _magSize;
+        Aiming = false;
     }
 
 
@@ -56,18 +58,23 @@ public class FireArm : WeaponScript
             return;
 
         if (Input.GetKeyDown(KeyCode.R) && BulletsLeft < _magSize && !_isReloading) {
-            int amount = _weaponsManager.RemoveAmmo(_ammoType, _magSize - BulletsLeft);
+            int amount = _weaponsManager.RemoveAmmo(_type, _magSize - BulletsLeft);
             if (amount > 0) {
                 StartCoroutine(Reload(amount));
             }
         }
+        if (Input.GetKeyUp(KeyCode.Mouse0)) {
+            _playEmptyNoise = true;
+        }
 
         _target = target;
+        Aiming = Input.GetKey(KeyCode.Mouse1);
+        _animator.SetBool("AIMING", Aiming);
+
         bool shoot = Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKey(KeyCode.Mouse0) &&
                     _shootingMode == ShootingMode.Auto;
 
-        if (shoot && !_isReloading)
-        {
+        if (shoot && !_isReloading) {
             if (BulletsLeft <= 0 && _playEmptyNoise) {
                 _audioSource.PlayOneShot(_emptySound);
                 _playEmptyNoise = false;
@@ -89,7 +96,12 @@ public class FireArm : WeaponScript
 
     private void Fire()
     {
-        _animator.Play("RECOIL", 0, 0f);
+        if (!Aiming) {
+            _animator.Play("RECOIL", 0, 0f);
+        }
+        else {
+            _animator.Play("AIMRECOIL", 0, 0f);
+        }
         _audioSource.PlayOneShot(_fireSound);
         _muzzleParticles.Play();
 
@@ -117,7 +129,7 @@ public class FireArm : WeaponScript
 
     private IEnumerator Reload(int amount)
     {
-        _animator.Play("RELOAD", 0, 0f);
+        _animator.SetTrigger("RELOAD");
         _audioSource.PlayOneShot(_reloadSound);
         _isReloading = true;
         yield return new WaitForSeconds(_reloadTime);

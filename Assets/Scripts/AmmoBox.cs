@@ -3,7 +3,7 @@ using UnityEngine;
 public class AmmoBox : MonoBehaviour, IPickable
 {
     [SerializeField] private GameObject _bullets;
-    [SerializeField] private AmmoType _type;
+    [SerializeField] private WeaponType _type;
     [SerializeField] private int _quantity;
     
 

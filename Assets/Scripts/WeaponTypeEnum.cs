@@ -1,4 +1,4 @@
-public enum AmmoType
+public enum WeaponType
 {
     AR,
     PISTOL,

@@ -1,17 +1,20 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class WeaponScript : MonoBehaviour, IPickable
 {
+    [SerializeField] protected WeaponType _type;
     [SerializeField] protected float _damage;
     [SerializeField] protected float _range;
-    [SerializeField] protected AmmoType _ammoType;
+    [SerializeField] private Sprite _sprite;
 
     protected ItemState _state = ItemState.NotPicked;
     protected WeaponsManager _weaponsManager;
     protected AudioSource _audioSource;
     protected Animator _animator;
 
-    public AmmoType AmmoType { get => _ammoType; }
+    public WeaponType Type { get => _type; }
+    public Sprite Sprite { get => _sprite; }
 
 
     protected void Start()
@@ -37,7 +40,6 @@ public abstract class WeaponScript : MonoBehaviour, IPickable
         _weaponsManager.AddWeapon(this);
         
         RemoveOutline();
-        Disable();
     }
 
     public void Drop()
