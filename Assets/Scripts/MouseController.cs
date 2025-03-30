@@ -23,9 +23,9 @@ public class MouseController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) {
+        /*if (Input.GetKeyDown(KeyCode.Escape)) {
             LockCursor(!_cursorLocked);
-        }
+        }*/
 
         _yRotation += Input.GetAxis("Mouse X") * _mouseSensitivity * Time.deltaTime;
         _xRotation -= Input.GetAxis("Mouse Y") * _mouseSensitivity * Time.deltaTime;

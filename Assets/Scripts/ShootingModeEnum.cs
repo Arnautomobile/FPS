@@ -1,4 +1,4 @@
-public enum ShootingModeEnum 
+public enum ShootingMode
 {
     SemiAuto,
     Auto,

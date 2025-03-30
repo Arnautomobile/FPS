@@ -1,6 +1,10 @@
 public interface IPickable
 {
-    void Pickup(OwnerType owner);
+    void Pickup();
     void Drop();
-    bool Picked();
+    void Activate();
+    void Disable();
+    void Outline();
+    void RemoveOutline();
+    bool IsPicked();
 }

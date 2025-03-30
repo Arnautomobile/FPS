@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BulletScript : Projectile
 {
-    void FixedUpdate()
+    protected void FixedUpdate()
     {
         _rigidbody.velocity = _direction * _speed;
         if (Vector3.Distance(_startingPosition, _rigidbody.position) > _range) {

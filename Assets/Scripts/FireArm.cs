@@ -4,67 +4,103 @@ using UnityEngine;
 public class FireArm : WeaponScript
 {
     [SerializeField] private GameObject _bulletPrefab;
+    [SerializeField] private GameObject _muzzleFlash;
     [SerializeField] private Transform _gunEndPoint;
-    [SerializeField] private ShootingModeEnum _shootingMode;
+
+    [Header("Audio Clips")]
+    [SerializeField] private AudioClip _fireSound;
+    [SerializeField] private AudioClip _emptySound;
+    [SerializeField] private AudioClip _reloadSound;
+
+    [Header("Firearm Parameters")]
+    [SerializeField] private ShootingMode _shootingMode;
     [SerializeField] private float _bulletSpeed;
     [SerializeField] private float _fireRate;
     [SerializeField] private float _spread;
+    [SerializeField] private int _magSize;
+    [SerializeField] private float _reloadTime;
     [SerializeField] private float _burstSpeed;
     [SerializeField] private int _bulletsPerBurst;
 
+    private ParticleSystem _muzzleParticles;
     private Vector3 _target = Vector3.zero;
+    private bool _isReloading = false;
     private float _cooldown = 0;
+    private bool _playEmptyNoise = true;
 
-    void Update()
+    public int BulletsLeft { get; private set; }
+
+
+    private new void Start()
     {
+        base.Start();
+
+        _muzzleParticles = _muzzleFlash.GetComponent<ParticleSystem>();
+        BulletsLeft = _magSize;
+    }
+
+
+    private new void Update()
+    {
+        base.Update();
+
         if (_cooldown > 0) {
             _cooldown -= Time.deltaTime;
         }
     }
 
 
-    public override void PlayerUse(Vector3 target)
+    public override void Use(Vector3 target)
     {
-        if (!Active || _ownerType != OwnerType.Player) return;
+        if (_state != ItemState.Active)
+            return;
+
+        if (Input.GetKeyDown(KeyCode.R) && BulletsLeft < _magSize && !_isReloading) {
+            StartCoroutine(Reload());
+        }
+        if (Input.GetKeyUp(KeyCode.Mouse0)) {
+            _playEmptyNoise = true;
+        }
 
         _target = target;
-        bool shoot = Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKey(KeyCode.Mouse0) && _shootingMode == ShootingModeEnum.Auto;
+        bool shoot = Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKey(KeyCode.Mouse0) &&
+                    _shootingMode == ShootingMode.Auto;
 
-        if (shoot && _cooldown <= 0) {
-            _cooldown = _fireRate;
-
-            if (_shootingMode == ShootingModeEnum.Burst) {
-                StartCoroutine(BurstFire(_bulletsPerBurst));
+        if (shoot && !_isReloading)
+        {
+            if (BulletsLeft <= 0 && _playEmptyNoise) {
+                _audioSource.PlayOneShot(_emptySound);
+                _playEmptyNoise = false;
             }
-            else {
-                Fire();
+            else if (_cooldown <= 0 && BulletsLeft > 0) {
+                _cooldown = _fireRate;
+                if (_shootingMode == ShootingMode.Burst) {
+                    StartCoroutine(BurstFire(_bulletsPerBurst));
+                }
+                else {
+                    Fire();
+                }
             }
         }
     }
 
 
-    public override void EnemyUse(Vector3 target)
+    private void Fire()
     {
-        if (!Active || _ownerType != OwnerType.Enemy) return;
+        _animator.Play("RECOIL", 0, 0f);
+        _audioSource.PlayOneShot(_fireSound);
+        _muzzleParticles.Play();
 
-
+        BulletsLeft--;
+        GameObject bullet = Instantiate(_bulletPrefab, _gunEndPoint.position, transform.rotation);
+        bullet.GetComponent<Projectile>().Setup(GetSpreadDirection(), _damage, _range, _bulletSpeed);
     }
-
 
     private Vector3 GetSpreadDirection()
     {
         float x = Random.Range(-_spread, _spread);
         float y = Random.Range(-_spread, _spread);
         return (_target - _gunEndPoint.position).normalized + new Vector3(x,y,0);
-    }
-
-
-    private void Fire()
-    {
-        if (!Active) return;
-
-        GameObject bullet = Instantiate(_bulletPrefab, _gunEndPoint.position, transform.rotation);
-        bullet.GetComponent<Projectile>().Setup(GetSpreadDirection(), _damage, _range, _bulletSpeed);
     }
 
 
@@ -75,5 +111,15 @@ public class FireArm : WeaponScript
             Fire();
             yield return new WaitForSeconds(_burstSpeed);
         }
+    }
+
+    private IEnumerator Reload()
+    {
+        _animator.Play("RELOAD", 0, 0f);
+        _audioSource.PlayOneShot(_reloadSound);
+        _isReloading = true;
+        yield return new WaitForSeconds(_reloadTime);
+        _isReloading = false;
+        BulletsLeft = _magSize;
     }
 }
