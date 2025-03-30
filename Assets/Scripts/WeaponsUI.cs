@@ -35,12 +35,12 @@ public class WeaponsUI : MonoBehaviour
             WeaponScript weaponScript = _weaponsManager.Weapons[i];
 
             if (i == _weaponsManager.Selected) {
-                rectTransform.position = new Vector3(rectTransform.position.x, 0, 0);
+                rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, 2.5f);
                 color.a = 0.27f;
                 image.color = color;
             }
             else {
-                rectTransform.position = new Vector3(rectTransform.position.x, -2.5f, 0);
+                rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, -2.5f);
                 color.a = 0.08f;
                 image.color = color;
             }
@@ -71,7 +71,9 @@ public class WeaponsUI : MonoBehaviour
             ammoText += "0";
         }
         ammoText += fireArm.BulletsLeft;
+
         _ammoLeft.text = ammoText;
+        _totalAmmo.text = _weaponsManager.Ammunitions[fireArm.AmmoType].ToString();
 
         for (int i = 0; i < _ammoImages.Length; i++) {
             if ((int)selectedWeapon.AmmoType == i) {

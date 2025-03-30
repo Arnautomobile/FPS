@@ -7,6 +7,7 @@ public class WeaponsManager : MonoBehaviour
     [SerializeField] private Transform _weaponPosition;
     [SerializeField] private Camera _camera;
 
+    public Dictionary<AmmoType, int> Ammunitions { get; private set; }
     public WeaponScript[] Weapons { get; private set; }
     public int Selected { get; private set; }
 
@@ -18,11 +19,23 @@ public class WeaponsManager : MonoBehaviour
         Weapons[1] = null;
         Weapons[2] = null;
         Selected = 0;
+
+        Ammunitions = new Dictionary<AmmoType, int>
+        {
+            { AmmoType.AR, 0 },
+            { AmmoType.PISTOL, 0 },
+            { AmmoType.PRECISION, 0 },
+            { AmmoType.ROCKET, 0 }
+        };
     }
 
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Q)) {
+            DropWeapon();
+        }
+
         if (Input.GetKeyDown(KeyCode.Alpha1)) { 
             Selected = 0;
         }
@@ -83,11 +96,10 @@ public class WeaponsManager : MonoBehaviour
             }
         }
 
-        if (!added) return;
-
-        weaponScript.transform.SetParent(_weaponPosition, false);
-        weaponScript.RemoveOutline();
-        weaponScript.Pickup();
+        if (added) {
+            weaponScript.transform.SetParent(_weaponPosition, false);    
+            weaponScript.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);        
+        }
     }
 
     public void DropWeapon()
@@ -97,5 +109,24 @@ public class WeaponsManager : MonoBehaviour
         Weapons[Selected].transform.SetParent(null);
         Weapons[Selected].Drop();
         Weapons[Selected] = null;
-    } 
+    }
+
+
+    public void AddAmmo(AmmoType type, int amount)
+    {
+        Ammunitions[type] += amount;
+        if (Ammunitions[type] > 999) {
+            Ammunitions[type] = 999;
+        }
+    }
+
+    public int RemoveAmmo(AmmoType type, int amount)
+    {
+        Ammunitions[type] -= amount;
+        if (Ammunitions[type] < 0) {
+            amount += Ammunitions[type];
+            Ammunitions[type] = 0;
+        }
+        return amount;
+    }
 }

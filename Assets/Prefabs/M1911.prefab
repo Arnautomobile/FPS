@@ -5392,6 +5392,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damage: 22
   _range: 100
+  _ammoType: 1
   _bulletPrefab: {fileID: 5842142090178180871, guid: d0be3a0aee674d541b9b269d76175b4c,
     type: 3}
   _muzzleFlash: {fileID: 6129073980739763811}

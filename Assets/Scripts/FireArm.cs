@@ -26,7 +26,7 @@ public class FireArm : WeaponScript
     private Vector3 _target = Vector3.zero;
     private bool _isReloading = false;
     private float _cooldown = 0;
-    private bool _playEmptyNoise = true;
+    private bool _playEmptyNoise = false;
 
     public int BulletsLeft { get; private set; }
 
@@ -56,10 +56,10 @@ public class FireArm : WeaponScript
             return;
 
         if (Input.GetKeyDown(KeyCode.R) && BulletsLeft < _magSize && !_isReloading) {
-            StartCoroutine(Reload());
-        }
-        if (Input.GetKeyUp(KeyCode.Mouse0)) {
-            _playEmptyNoise = true;
+            int amount = _weaponsManager.RemoveAmmo(_ammoType, _magSize - BulletsLeft);
+            if (amount > 0) {
+                StartCoroutine(Reload(amount));
+            }
         }
 
         _target = target;
@@ -74,6 +74,8 @@ public class FireArm : WeaponScript
             }
             else if (_cooldown <= 0 && BulletsLeft > 0) {
                 _cooldown = _fireRate;
+                _playEmptyNoise = true;
+
                 if (_shootingMode == ShootingMode.Burst) {
                     StartCoroutine(BurstFire(_bulletsPerBurst));
                 }
@@ -113,13 +115,13 @@ public class FireArm : WeaponScript
         }
     }
 
-    private IEnumerator Reload()
+    private IEnumerator Reload(int amount)
     {
         _animator.Play("RELOAD", 0, 0f);
         _audioSource.PlayOneShot(_reloadSound);
         _isReloading = true;
         yield return new WaitForSeconds(_reloadTime);
         _isReloading = false;
-        BulletsLeft = _magSize;
+        BulletsLeft += amount;
     }
 }

@@ -25,8 +25,8 @@ public class PickupItem : MonoBehaviour
             item = hit.transform.gameObject;
 
             if (item != _hoveredItem) {
-                IPickable pickable;
-                if ((pickable = item.GetComponent<IPickable>()) != null) {
+                IPickable pickable = item.GetComponent<IPickable>();
+                if (pickable != null && !pickable.IsPicked()) {
                     _hoveredItem = item;
                     pickable.Outline();
                 }
@@ -40,13 +40,7 @@ public class PickupItem : MonoBehaviour
 
 
         if (Input.GetKeyDown(KeyCode.F) && _hoveredItem != null) {
-            WeaponScript weaponScript;
-            if ((weaponScript = _hoveredItem.GetComponent<WeaponScript>()) != null) {
-                _weaponsManager.AddWeapon(weaponScript);
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.Q)) {
-            _weaponsManager.DropWeapon();
+            _hoveredItem.GetComponent<IPickable>().Pickup(gameObject);
         }
     }
 }

@@ -6,11 +6,13 @@ public abstract class WeaponScript : MonoBehaviour, IPickable
     [SerializeField] protected float _range;
     [SerializeField] protected AmmoType _ammoType;
 
-    protected Animator _animator;
-    protected AudioSource _audioSource;
     protected ItemState _state = ItemState.NotPicked;
+    protected WeaponsManager _weaponsManager;
+    protected AudioSource _audioSource;
+    protected Animator _animator;
 
     public AmmoType AmmoType { get => _ammoType; }
+
 
     protected void Start()
     {
@@ -25,16 +27,25 @@ public abstract class WeaponScript : MonoBehaviour, IPickable
     public abstract void Use(Vector3 target);
 
 
-    public void Pickup()
+    public void Pickup(GameObject player)
     {
+        if (_state != ItemState.NotPicked) return;
+
         _animator.enabled = true;
-        transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
         _state = ItemState.PickedUp;
+        _weaponsManager = player.GetComponent<WeaponsManager>();
+        _weaponsManager.AddWeapon(this);
+        
+        RemoveOutline();
+        Disable();
     }
 
     public void Drop()
     {
+        if (_state == ItemState.NotPicked) return;
+
         _animator.enabled = false;
+        _weaponsManager = null;
         _state = ItemState.NotPicked;
     }
 
