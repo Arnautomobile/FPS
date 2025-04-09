@@ -17,10 +17,14 @@ public class FireArm : WeaponScript
     [SerializeField] private float _bulletSpeed;
     [SerializeField] private float _fireRate;
     [SerializeField] private float _spread;
+    [SerializeField] private float _aimAccuracy;
     [SerializeField] private int _magSize;
     [SerializeField] private float _reloadTime;
+
+    [Header("Burst Weapon Settings")]
     [SerializeField] private float _burstSpeed;
     [SerializeField] private int _bulletsPerBurst;
+
 
     private ParticleSystem _muzzleParticles;
     private Vector3 _target = Vector3.zero;
@@ -96,24 +100,26 @@ public class FireArm : WeaponScript
 
     private void Fire()
     {
+        float spread = _spread;
         if (!Aiming) {
             _animator.Play("RECOIL", 0, 0f);
         }
         else {
             _animator.Play("AIMRECOIL", 0, 0f);
+            spread /= _aimAccuracy;
         }
         _audioSource.PlayOneShot(_fireSound);
         _muzzleParticles.Play();
 
         BulletsLeft--;
         GameObject bullet = Instantiate(_bulletPrefab, _gunEndPoint.position, transform.rotation);
-        bullet.GetComponent<Projectile>().Setup(GetSpreadDirection(), _damage, _range, _bulletSpeed);
+        bullet.GetComponent<BulletScript>().Setup(GetSpreadDirection(spread), _damage, _range, _bulletSpeed);
     }
 
-    private Vector3 GetSpreadDirection()
+    private Vector3 GetSpreadDirection(float spread)
     {
-        float x = Random.Range(-_spread, _spread);
-        float y = Random.Range(-_spread, _spread);
+        float x = Random.Range(-spread, spread);
+        float y = Random.Range(-spread, spread);
         return (_target - _gunEndPoint.position).normalized + new Vector3(x,y,0);
     }
 

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public abstract class WeaponScript : MonoBehaviour, IPickable
 {
     [SerializeField] protected WeaponType _type;
-    [SerializeField] protected float _damage;
+    [SerializeField] protected int _damage;
     [SerializeField] protected float _range;
     [SerializeField] private Sprite _sprite;
 
@@ -34,12 +34,16 @@ public abstract class WeaponScript : MonoBehaviour, IPickable
     {
         if (_state != ItemState.NotPicked) return;
 
+        _weaponsManager = player.GetComponent<WeaponsManager>();
+        if (!_weaponsManager.AddWeapon(this)) {
+            _weaponsManager = null;
+            return;
+        }
+
         _animator.enabled = true;
         _state = ItemState.PickedUp;
-        _weaponsManager = player.GetComponent<WeaponsManager>();
-        _weaponsManager.AddWeapon(this);
-        
         RemoveOutline();
+        GlobalReferences.RenderOver(transform);
     }
 
     public void Drop()
@@ -49,6 +53,7 @@ public abstract class WeaponScript : MonoBehaviour, IPickable
         _animator.enabled = false;
         _weaponsManager = null;
         _state = ItemState.NotPicked;
+        GlobalReferences.RenderItem(transform);
     }
 
     public void Activate()

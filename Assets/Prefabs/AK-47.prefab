@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2974983715503923685}
   - component: {fileID: 2967575295317283431}
   - component: {fileID: 2958171752528668293}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: AK74
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 2974630919470951113}
   - component: {fileID: 2967378569536484359}
   - component: {fileID: 2956787537757962157}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Bolt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -181,7 +181,7 @@ GameObject:
   - component: {fileID: 2974975091339789821}
   - component: {fileID: 2963930293855387255}
   - component: {fileID: 2957711366191455639}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -264,7 +264,7 @@ GameObject:
   - component: {fileID: 2974877755463204637}
   - component: {fileID: 2963744336655148469}
   - component: {fileID: 2957574629701797829}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Mag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -350,7 +350,7 @@ GameObject:
   - component: {fileID: -772773197515138324}
   - component: {fileID: 7998946316753342719}
   - component: {fileID: -2369940954507423934}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: AK-47
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -538,6 +538,7 @@ MonoBehaviour:
   _bulletSpeed: 200
   _fireRate: 0.15
   _spread: 0.02
+  _aimAccuracy: 3
   _magSize: 30
   _reloadTime: 1.8
   _burstSpeed: 0
@@ -571,7 +572,7 @@ GameObject:
   - component: {fileID: 273284878198177683}
   - component: {fileID: 6588482015443887715}
   - component: {fileID: 5375936963240532961}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: MuzzleFlashEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5352,7 +5353,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1776849296012300467}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: GunEndPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

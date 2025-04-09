@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class RocketScript : Projectile
+public class RocketScript : BulletScript
 {
     
 }

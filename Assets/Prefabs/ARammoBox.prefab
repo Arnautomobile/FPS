@@ -214,7 +214,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd01948aa08518d42a00f61961bde6f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bullets: {fileID: 3925723059616628090}
+  _visible: {fileID: 3925723059616628090}
   _type: 0
   _quantity: 60
 --- !u!65 &4985459601350221452

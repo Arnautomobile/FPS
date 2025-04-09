@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4804713756684909354}
   - component: {fileID: 4812425854732663194}
   - component: {fileID: 4821186954885397272}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Hammer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 4806418859991259072}
   - component: {fileID: 4813077847690214958}
   - component: {fileID: 4821133526842491780}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 4804766900269093168}
   - component: {fileID: 4813172611599561502}
   - component: {fileID: 4823354448823181990}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Slide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 4804599394521045280}
   - component: {fileID: 4812668368618763168}
   - component: {fileID: 4821113346530169028}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -348,7 +348,7 @@ GameObject:
   - component: {fileID: 4806447870890145342}
   - component: {fileID: 4812678854537665482}
   - component: {fileID: 4821171673888414024}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Magazin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -431,7 +431,7 @@ GameObject:
   - component: {fileID: 2052619123866192114}
   - component: {fileID: 4960790226736648450}
   - component: {fileID: 6137723764803316864}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: MuzzleFlashEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5217,7 +5217,7 @@ GameObject:
   - component: {fileID: 2576901441034271618}
   - component: {fileID: 3656229255326647509}
   - component: {fileID: -1316685564789190430}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: M1911
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5405,6 +5405,7 @@ MonoBehaviour:
   _bulletSpeed: 150
   _fireRate: 0.3
   _spread: 0.025
+  _aimAccuracy: 2
   _magSize: 7
   _reloadTime: 1.2
   _burstSpeed: 0
@@ -5436,7 +5437,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8204413909608145023}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: GunEndPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
