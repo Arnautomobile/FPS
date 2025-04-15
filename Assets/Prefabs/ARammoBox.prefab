@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5193511904307295071}
   - component: {fileID: 1564942839875908157}
   - component: {fileID: 6964602241218973398}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 2205330880949820539}
   - component: {fileID: 1940843802638959853}
   - component: {fileID: 415854400748124376}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bullets
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +178,7 @@ GameObject:
   - component: {fileID: 4955462665929136595}
   - component: {fileID: 4985459601350221452}
   - component: {fileID: 3551130313160102162}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ARammoBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}

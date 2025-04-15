@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3195704975333008112}
   - component: {fileID: 6741142035596866858}
   - component: {fileID: 8894563695793848497}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PISTOLammoBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 552288833329409006}
   - component: {fileID: 9146953067090643313}
   - component: {fileID: 4762803076196560735}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bullets
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -184,7 +184,7 @@ GameObject:
   - component: {fileID: 4783299552277759020}
   - component: {fileID: 1790499418764335877}
   - component: {fileID: 7989187663885295177}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}

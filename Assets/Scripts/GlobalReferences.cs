@@ -1,11 +1,12 @@
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
+using UnityEngine.AI;
 
 public class GlobalReferences : MonoBehaviour
 {
     public static GlobalReferences Instance { get; private set; }
-
+    public GameObject player;
     public GameObject stoneBulletImpact;
+    public GameObject bloodSpray;
 
 
     void Awake()
@@ -38,5 +39,18 @@ public class GlobalReferences : MonoBehaviour
                 RenderItem(child);
             }
         }
+    }
+
+    public static Vector3 GetRandomNavMeshPosition(Vector3 center, float radius)
+    {
+        for (int i = 0; i < 30; i++) { // Try up to 30 times
+            Vector3 randomDirection = Random.insideUnitSphere * radius;
+            randomDirection += center;
+
+            if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, radius, NavMesh.AllAreas)) {
+                return hit.position;
+            }
+        }
+        return center; // fallback if no valid position found
     }
 }

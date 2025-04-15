@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class WeaponsManager : MonoBehaviour
@@ -12,6 +11,7 @@ public class WeaponsManager : MonoBehaviour
     [SerializeField] private Transform _weaponPosition;
     [SerializeField] private Vector3 _throwableChargedOffset;
     [SerializeField] private Camera _camera;
+    [SerializeField] private float _dropForce;
     [SerializeField] private float _throwForce;
     [SerializeField] private float _chargeTime;
 
@@ -65,10 +65,8 @@ public class WeaponsManager : MonoBehaviour
         }
 
         
-        if (Selected < 2) {
-            if (_activeThrowable != null) {
-                Destroy(_activeThrowable);
-            }
+        if (Selected < 2 && _activeThrowable != null) {
+            Destroy(_activeThrowable);
         }
         else if (Throwables[_currentType] > 0) {
             if (_activeThrowable == null) {
@@ -77,9 +75,6 @@ public class WeaponsManager : MonoBehaviour
             else {
                 UseThrowable();
             }
-        }
-        else if (_activeThrowable != null) {
-            Destroy(_activeThrowable);
         }
     }
 
@@ -98,12 +93,13 @@ public class WeaponsManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha3)) {
             Selected = 2;
-            _currentType = ConsummableType.GRENADE;
+            // call this method from the inventory script with the item type as argument
+            SetThrowable();
         }
         if (Input.GetKeyDown(KeyCode.Alpha4)) {
             // tactical -> if item is not throwable dont call the SetThrowable() method
             Selected = 3;
-            _currentType = ConsummableType.FLASHBANG;
+            SetThrowable();
         }
     }
 
@@ -111,14 +107,18 @@ public class WeaponsManager : MonoBehaviour
 
     private void SetThrowable()
     {
+        // add argument consummabletype to this method to then update the currentType
+
         if (_activeThrowable != null) {
             Destroy(_activeThrowable);
         }
 
-        if (_currentType == ConsummableType.GRENADE && Throwables[ConsummableType.GRENADE] > 0) {
+        if (Selected == 2 && Throwables[ConsummableType.GRENADE] > 0) {
+            _currentType = ConsummableType.GRENADE;
             _activeThrowable = Instantiate(_grenadePrefab);
         }
-        if (_currentType == ConsummableType.FLASHBANG && Throwables[ConsummableType.FLASHBANG] > 0) {
+        if (Selected == 3 && Throwables[ConsummableType.FLASHBANG] > 0) {
+            _currentType = ConsummableType.FLASHBANG;
             _activeThrowable = Instantiate(_flashbangPrefab);
         }
 
@@ -134,12 +134,12 @@ public class WeaponsManager : MonoBehaviour
     private void UseThrowable()
     {
         _activeThrowable.transform.localPosition = _throwableChargedOffset * (_chargeTimer/_chargeTime);
+        _activeThrowable.transform.localRotation = Quaternion.identity;
 
         if (Input.GetKey(KeyCode.Mouse1) && _chargeTimer < _chargeTime) {
             _chargeTimer += Time.deltaTime;
         }
         else if (Input.GetKeyUp(KeyCode.Mouse1)) {
-            // use another dictionnary with throwable types and amount
             Throwables[_currentType]--;
             _activeThrowable.transform.SetParent(null);
             _activeThrowable.GetComponent<Throwable>().Throw(_camera.transform.forward, _throwForce * (_chargeTimer/_chargeTime));
@@ -196,10 +196,13 @@ public class WeaponsManager : MonoBehaviour
 
     public void DropWeapon()
     {
-        if (Weapons[Selected] == null) return;
+        WeaponScript weapon = Weapons[Selected];
+        if (weapon == null) return;
         
-        Weapons[Selected].transform.SetParent(null);
-        Weapons[Selected].Drop();
+        weapon.transform.SetParent(null);
+        weapon.Drop();
+        weapon.GetComponent<Rigidbody>().AddForce(_camera.transform.forward * _dropForce, ForceMode.Impulse);
+
         Weapons[Selected] = null;
     }
 

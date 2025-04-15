@@ -46,20 +46,19 @@ public class FireArm : WeaponScript
     }
 
 
-    private new void Update()
+    private void Update()
     {
-        base.Update();
-
         if (_cooldown > 0) {
             _cooldown -= Time.deltaTime;
         }
+
+        // do the same for reload and cancel it when switching weapons
     }
 
 
     public override void Use(Vector3 target)
     {
-        if (_state != ItemState.Active)
-            return;
+        if (_state != ItemState.Active) return;
 
         if (Input.GetKeyDown(KeyCode.R) && BulletsLeft < _magSize && !_isReloading) {
             int amount = _weaponsManager.RemoveAmmo(_type, _magSize - BulletsLeft);

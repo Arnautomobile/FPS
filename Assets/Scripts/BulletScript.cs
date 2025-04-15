@@ -46,7 +46,8 @@ public class BulletScript : MonoBehaviour
             CreateBulletImpactEffect(collision);
             Destroy(gameObject);
         }
-        if (damageable != null) {
+        if (hit.CompareTag("Enemy") && damageable != null) {
+            CreateBloodSprayEffect(collision);
             damageable.Damage(_damage);
             Destroy(gameObject);
         }
@@ -58,5 +59,13 @@ public class BulletScript : MonoBehaviour
         GameObject hole = Instantiate(GlobalReferences.Instance.stoneBulletImpact,
                            contact.point, Quaternion.LookRotation(contact.normal));
         hole.transform.SetParent(collision.gameObject.transform);
+    }
+
+    private void CreateBloodSprayEffect(Collision collision)
+    {
+        ContactPoint contact = collision.contacts[0];
+        GameObject blood = Instantiate(GlobalReferences.Instance.bloodSpray,
+                           contact.point, Quaternion.LookRotation(contact.normal));
+        blood.transform.SetParent(collision.gameObject.transform);
     }
 }

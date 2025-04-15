@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public abstract class WeaponScript : MonoBehaviour, IPickable
 {
+    // use scriptable object for constant fields;
     [SerializeField] protected WeaponType _type;
     [SerializeField] protected int _damage;
     [SerializeField] protected float _range;
@@ -12,6 +13,7 @@ public abstract class WeaponScript : MonoBehaviour, IPickable
     protected WeaponsManager _weaponsManager;
     protected AudioSource _audioSource;
     protected Animator _animator;
+    private Rigidbody _rigidbody;
 
     public WeaponType Type { get => _type; }
     public Sprite Sprite { get => _sprite; }
@@ -21,10 +23,7 @@ public abstract class WeaponScript : MonoBehaviour, IPickable
     {
         _animator = GetComponent<Animator>();
         _audioSource = GetComponent<AudioSource>();
-    }
-    protected void Update()
-    {
-        
+        _rigidbody = GetComponent<Rigidbody>();
     }
 
     public abstract void Use(Vector3 target);
@@ -40,6 +39,7 @@ public abstract class WeaponScript : MonoBehaviour, IPickable
             return;
         }
 
+        _rigidbody.isKinematic = true;
         _animator.enabled = true;
         _state = ItemState.PickedUp;
         RemoveOutline();
@@ -50,9 +50,11 @@ public abstract class WeaponScript : MonoBehaviour, IPickable
     {
         if (_state == ItemState.NotPicked) return;
 
-        _animator.enabled = false;
         _weaponsManager = null;
+        _rigidbody.isKinematic = false;
+        _animator.enabled = false;
         _state = ItemState.NotPicked;
+        transform.GetChild(0).localPosition = Vector3.zero;
         GlobalReferences.RenderItem(transform);
     }
 
